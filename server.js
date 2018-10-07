@@ -17,7 +17,6 @@ app.get('/',function(req,res){
     dblist.getAllitemfromproductlist().
     then(function(items){
         console.log(items);
-        
         res.render('category.ejs',{data:items});
     }).catch(function(err){
         res.send(err);
@@ -25,7 +24,6 @@ app.get('/',function(req,res){
     
 })
 app.get('/cart',function(req,res){
-    
     dbcart.getallitemsfromcart().
     then(function(orders){
         console.log(orders);
@@ -35,14 +33,11 @@ app.get('/cart',function(req,res){
         })
     }).catch(function(err){
         res.send(err);
-        
     });
-
 });
 
-app.get('/admin',function(req,res){
-    
-res.render('admin.ejs');
+app.get('/admin',function(req,res){  
+    res.render('admin.ejs');
 });
 app.post('/additem',function(req,res){
     var data=req.body.json; 
@@ -69,15 +64,12 @@ app.post('/addtocart',function(req,res){
      var description=ele.description;
      var price=ele.price;
      var img=ele.image;
-     console.log('------------------');
+     // console.log('------------------');
      
      dbcart.getitemswithtitlefromcart(item).
      then(function(orders){
          console.log(orders);
          if(orders.length>=1){
-             console.log('one');
-             console.log(orders[0].quantity+1);
-             
              dbcart.updatequantity(item,orders[0].quantity+1).then(function(update){
                 console.log(update);
                  
@@ -87,11 +79,10 @@ app.post('/addtocart',function(req,res){
                  res.send(err);
              })
          }else{
-             console.log('two');
+             // console.log('two');
              
              dbcart.insertincart(item,description,price,img,1).then(function(order){
-                console.log("******");
-                
+                // console.log("******"); 
                 console.log(order);
                 res.send();
              }).catch(function(err){
@@ -112,8 +103,7 @@ app.post('/updatequantityincart',function(req,res){
      var ele=JSON.parse(data);
      var item=ele.item;
      var quantity=ele.quantity;
-     console.log("123"+item+quantity+"123");
-     
+     // console.log("123"+item+quantity+"123");
      dbcart.updatequantity(item,quantity).then(function(update){
          res.send();
      }).catch(function(err){
@@ -128,10 +118,8 @@ app.get('/json',function(req,res){
         console.log(titles);
         res.send(titles);
     });
-
-
 })
-app.listen(8008,function(){
-console.log("SERVER STARTED AT 8008");
+app.listen(8080,function(){
+console.log("Listening on port 8080");
 
 });
